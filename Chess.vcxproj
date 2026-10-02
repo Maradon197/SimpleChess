@@ -127,7 +127,6 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GUIHandler.cpp" />
     <ClCompile Include="InputDetector.cpp" />
-    <ClCompile Include="LegalMoveGenerator.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -136,7 +135,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GUIHandler.h" />
     <ClInclude Include="InputDetector.h" />
-    <ClInclude Include="LegalMoveGenerator.h" />
+    <ClInclude Include="Main.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

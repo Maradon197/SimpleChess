@@ -6,11 +6,22 @@
 class GameState {
 private:
 	std::vector<std::vector<Tile>> board;
+	Color currentPlayer;
+	std::vector<Move> legalMoves;
+
+	void addMovesInDirection(Position, int, int, Color);
+
 public: 
-	void initBoard();
+	void initGame();
 	void cleanUpBoard();
-	std::vector<std::vector<Tile>> getBoard();
-	Tile getTile(int x, int y);
+
+	std::vector<std::vector<Tile>>* getBoardPointer();
+	Tile* getTilePointer(Position);
+	Color getCurrentPlayer();
+	std::vector<Move> getLegalMoves(Position);
+
+	void acceptMove(Move);
+	void setCurrentPlayer(const Color&);
 };
 
 #endif

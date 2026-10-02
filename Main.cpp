@@ -1,26 +1,14 @@
 //Start of the program flow
-//init GameState
-//		|
-//		|(tile positions)
-//		|
-//init InputDetector
-//		|
-//		|(tile clicks)
-//		|
-//init GameLogic
-//		|
-//		|(command) 
-//		|
-//init LegalMoveGenerator
-//		|
-//		|(move or command)
-//		|
-//init GUI Handler
-//		|
-//		|(UI Update)
-//		|
-//User! (wait... do we have to init the user as well??)
+//General TODO:
+//special moves (EP, Castling)
+//promoting pawns
+//checks + king cant be captured
+//checkmate / game end
+//board UI
+//timer
+//engine/AI
 
+#include "Main.h"
 #include "GameState.h"
 #include "InputDetector.h"
 #include "GameLogic.h"
@@ -30,24 +18,52 @@
 #include <iostream>
 
 int main() {
-	//init GameState
+	//GameState: Stores game data
 	GameState gameState;
-	gameState.initBoard();
+	gameState.initGame();
 
-	//init InputDetector
+	//InputDetector: Triggers user inferred actions
 	InputDetector inputDetector;
 	inputDetector.initDetection();
 
-	//init GameLogic
+	//GameLogic: Works out the results of interactions
 	GameLogic gameLogic;
-	gameLogic.initGameLogic();
+	gameLogic.initGameLogic(&gameState);
 
-	//init LegalMoveGenerator
-	LegalMoveGenerator legalMoveGenerator;
-	legalMoveGenerator.initLegalMoveGenerator();
-
-	//init GUI Handler
+	//GUI Handler: Updates Display
 	GUIHandler gUIHandler;
-	gUIHandler.initGUIHandler();
+	gUIHandler.initGUIHandler(&gameState);
+
+	runGameCycle(&gameState, &inputDetector, &gameLogic, &gUIHandler);
+
 	return 0;
+}
+
+void runGameCycle(GameState* gS, InputDetector* iD, GameLogic* gL, GUIHandler* gUIH) {
+	std::cout << "Main.cpp: runGameCycle started!\n";
+
+	std::cout << "\n\n GAME BEGINS!";
+	Tile* selectedTile = new Tile();
+	
+	gUIH->displayDebugBoard(gS->getBoardPointer());
+	
+	Position workingPosition = iD->getDebugUserInputPosition();
+
+	//handleTileClick returns true iff the position was valid
+	//TODO: Verify this works!
+	if (gL->handleTileClick(workingPosition) != ActionType::INVALID) {//this also runs handleTileClick
+		
+		//TODO: make logic for this correct
+		switch (gS->getCurrentPlayer()) {
+			case Color::WHITE: 
+				gS->setCurrentPlayer(Color::BLACK);
+				break;
+			case Color::BLACK: 
+				gS->setCurrentPlayer(Color::WHITE);
+				break;
+		}
+	}
+	else {
+		//TODO: error handling
+	}
 }
