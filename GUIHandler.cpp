@@ -30,3 +30,15 @@ void GUIHandler::displayDebugBoard(std::vector<std::vector<Tile>>* board) {
 		std::cout << std::endl;
 	}
 }
+
+void GUIHandler::selectTileAtPosition(Position pos) {
+
+}
+
+void GUIHandler::displayLegalMovesAtPositions(std::vector<Position> pos) {
+
+}
+
+void GUIHandler::runDeselection() {
+
+}

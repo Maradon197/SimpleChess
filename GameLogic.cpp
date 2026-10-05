@@ -23,9 +23,11 @@ ActionType GameLogic::handleTileClick(Position p) {
 	}
 
 	if (lastActionType == ActionType::SELECT) {
+		std::cout << "GameLogic.cpp: running potential move\n";
 		runPotentialMove(lastSelection, p);
 	}
 	else {
+		std::cout << "GameLogic.cpp: running potential select\n";
 		runPotentialSelection(p);
 	}
 
@@ -40,11 +42,19 @@ void GameLogic::runPotentialSelection(Position p) {
 	if (workingTilePointer->piece == nullptr || workingTilePointer->piece->color != currentPlayer) {
 		//No owned piece: deselect/select nothing
 		lastActionType = ActionType::DESELECT;
+		std::cout << "GameLogic.cpp: Tile deselected, reason: ";
+		if (workingTilePointer->piece == nullptr) {
+			std::cout << "Piece was nullptr\n";
+		}
+		else {
+			std::cout << "Piece belongs to opponent\n";
+		}
 	}
 	else {
 		//Owned piece: select working tile
 		lastSelection = workingTilePointer->pos;
 		lastActionType = ActionType::SELECT;
+		std::cout << "GameLogic.cpp: Tile selected\n";
 	}
 }
 
@@ -69,7 +79,9 @@ void GameLogic::runPotentialMove(Position lastSelection, Position p) {
 
 	//if legal: make move with the piece in lastSelection, deselect it
 	if (flag_move_legal) {
+		std::cout << "GameLogic.cpp: Making a move, type: ";
 		gameStatePointer->acceptMove(move_candidate);
+		gameStatePointer->switchPlayer();
 		lastActionType = ActionType::MOVE;
 	}
 	//No legal move? Could have been a select
@@ -77,8 +89,17 @@ void GameLogic::runPotentialMove(Position lastSelection, Position p) {
 		gameStatePointer->getTilePointer(p)->piece->color == gameStatePointer->getCurrentPlayer()) {
 		lastSelection = p;
 		lastActionType = ActionType::SELECT;
+		std::cout << "GameLogic.cpp: Tile selected (instead of move)\n";
 	}
 	else {//no owned piece clicked
 		lastActionType = ActionType::DESELECT;
+		std::cout << "GameLogic.cpp: Tile deselected (instead of move), reason: No legal move, targeted piece: ";
+		if (gameStatePointer->getTilePointer(p)->piece == nullptr) {
+			std::cout << "Piece was nullptr\n";
+		}
+		else {
+			std::cout << "x: " << gameStatePointer->getTilePointer(p)->piece->pos.x <<
+				", y: " << gameStatePointer->getTilePointer(p)->piece->pos.y << std::endl;
+		}
 	}
 }

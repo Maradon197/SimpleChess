@@ -40,30 +40,29 @@ int main() {
 }
 
 void runGameCycle(GameState* gS, InputDetector* iD, GameLogic* gL, GUIHandler* gUIH) {
-	std::cout << "Main.cpp: runGameCycle started!\n";
+	//std::cout << "Main.cpp: runGameCycle started!\n";
 
 	std::cout << "\n\n GAME BEGINS!";
 	Tile* selectedTile = new Tile();
-	
 	gUIH->displayDebugBoard(gS->getBoardPointer());
-	
-	Position workingPosition = iD->getDebugUserInputPosition();
 
-	//handleTileClick returns true iff the position was valid
-	//TODO: Verify this works!
-	if (gL->handleTileClick(workingPosition) != ActionType::INVALID) {//this also runs handleTileClick
+	//GAME LOOP
+	while (true) {
 		
-		//TODO: make logic for this correct
-		switch (gS->getCurrentPlayer()) {
-			case Color::WHITE: 
-				gS->setCurrentPlayer(Color::BLACK);
-				break;
-			case Color::BLACK: 
-				gS->setCurrentPlayer(Color::WHITE);
-				break;
+		//I. get input
+		Position workingPosition = iD->getDebugUserInputPosition();
+
+		//II. handle input
+		if (gL->handleTileClick(workingPosition) != ActionType::INVALID) {//handleTileClick returns true iff the position was valid, this also runs handleTileClick
+
+			//III. display update
+			gUIH->displayDebugBoard(gS->getBoardPointer());
+		}
+		//IV. handle error
+		else {
+			std::cout << "Main.cpp: Invalid move!" << std::endl;
 		}
 	}
-	else {
-		//TODO: error handling
-	}
+
+	//TODO: Game End
 }

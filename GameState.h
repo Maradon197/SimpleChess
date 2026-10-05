@@ -10,6 +10,9 @@ private:
 	std::vector<Move> legalMoves;
 
 	void addMovesInDirection(Position, int, int, Color);
+	void addMoveUnderCondition(Position, int, int, bool);
+
+	MoveType determineMoveType(Position);
 
 public: 
 	void initGame();
@@ -22,6 +25,8 @@ public:
 
 	void acceptMove(Move);
 	void setCurrentPlayer(const Color&);
+	void switchPlayer();
+	void setPieceAtPosition(Position, Piece*);
 };
 
 #endif
